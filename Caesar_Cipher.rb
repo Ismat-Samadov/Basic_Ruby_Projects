@@ -1,25 +1,24 @@
-
 def caesar_cipher(text, shift)
-  for i in 0...text.length do
-    char_code = text[i].ord
+  encrypted_text = ""
 
-    (a, z) = case char_code
-             when 97..122 then [97, 122]   # a-z
-             when 65..90  then [65, 90]    # A-Z
-             else next
+  text.each_char do |char|
+    char_code = char.ord
+
+    case char_code
+    when 97..122 then base = 97   # 'a'..'z'
+    when 65..90  then base = 65   # 'A'..'Z'
+    else
+      encrypted_text << char
+      next
     end
 
-    rotate = shift > 0 ? 26 : -26
-
-    char_code += shift
-    char_code -= rotate unless char_code.between?(a, z)
-
-    text[i] = char_code.chr
+    rotated_code = base + (char_code - base + shift) % 26
+    encrypted_text << rotated_code.chr
   end
+
+  return encrypted_text
 end
 
 message = "Ismat"
-
-caesar_cipher(message, 10)
-
-puts message
+encrypted_message = caesar_cipher(message, 10)
+puts encrypted_message  # Output: "Scwi3"
